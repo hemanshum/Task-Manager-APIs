@@ -66,7 +66,7 @@ userSchema.virtual('tasks', {
 	foreignField: 'owner'
 });
 
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
 	const user = this;
 	const userObject = user.toObject();
 	delete userObject.password;
@@ -76,7 +76,7 @@ userSchema.methods.toJSON = function() {
 	return userObject;
 };
 
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = async function () {
 	const user = this;
 	const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET_WORD);
 
@@ -103,7 +103,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 };
 
 //Hash the plain text password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
 	const user = this;
 
 	if (user.isModified('password')) {
@@ -114,7 +114,7 @@ userSchema.pre('save', async function(next) {
 });
 
 //Delete user task when user removed
-userSchema.pre('remove', async function(next) {
+userSchema.pre('remove', async function (next) {
 	const user = this;
 	await Task.deleteMany({ owner: user._id });
 	next();
